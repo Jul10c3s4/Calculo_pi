@@ -1,11 +1,10 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
 #include <math.h>
 #include <time.h>
 
-#define NUM_TERMS 1000000000 // 1 bilhÃ£o de termos
+#define N 1000000000 // 1 bilhão de termos
 
 typedef struct {
     int thread_id;
@@ -19,11 +18,11 @@ void *calculate_pi(void *arg) {
     double sum = 0.0;
     long start = data->thread_id * data->num_terms / data->num_threads;
     long end = (data->thread_id + 1) * data->num_terms / data->num_threads;
-    int sign = (start % 2 == 0) ? 1 : -1;
+    int Sinal = (start % 2 == 0) ? 1 : -1;
 
     for (long i = start; i < end; i++) {
-        sum += sign / (2.0 * i + 1.0);
-        sign = -sign;
+        sum += Sinal / (2.0 * i + 1.0);
+        Sinal = -Sinal;
     }
 
     data->results[data->thread_id] = sum;
@@ -38,7 +37,7 @@ double compute_pi(int num_threads) {
 
     for (int i = 0; i < num_threads; i++) {
         thread_data[i].thread_id = i;
-        thread_data[i].num_terms = NUM_TERMS;
+        thread_data[i].num_terms = N;
         thread_data[i].num_threads = num_threads;
         thread_data[i].results = results;
 
@@ -89,7 +88,7 @@ int main(int argc, char *argv[]) {
             sum_time += elapsed;
             sum_time_sq += elapsed * elapsed;
 
-            printf("Executando %d: Ï€ = %.15f, Tempo = %.6f segundos\n", j + 1, pi, elapsed);
+            printf("Executando %d: π = %.15f, Tempo = %.6f segundos\n", j + 1, pi, elapsed);
         }
 
         double mean_time = sum_time / 5;
@@ -97,7 +96,7 @@ int main(int argc, char *argv[]) {
         double stddev = sqrt(variance);
         double coeff_var = (stddev / mean_time) * 100;
 
-        printf("Tempo MÃ©dio = %.6f segundos, Coeficiente de VariaÃ§Ã£o = %.2f%%\n\n", mean_time, coeff_var);
+        printf("Tempo Médio = %.6f segundos, Coeficiente de Variação = %.2f%%\n\n", mean_time, coeff_var);
     }
 
     return 0;
